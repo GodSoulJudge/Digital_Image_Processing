@@ -1,0 +1,50 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import numpy as np
+#1.加载图片
+lena=mpimg.imread('C:\\Users\\23501\\Desktop\\测试集(第一周)\\测试集\\1.bmp')
+lena.shape
+plt.imshow(lena)
+plt.axis('off')
+plt.show()
+#2.显示某个通道
+lena_1 = lena[:,:,0]
+plt.imshow(lena_1)
+plt.show()
+# 此时会发现显示的是热量图，不是我们预想的灰度图，可以添加 cmap 参数，有如下几种添加方法：
+plt.imshow(lena_1, cmap='Greys_r')
+plt.show()
+
+img = plt.imshow(lena_1)
+img.set_cmap('gray') # 'hot' 是热量图
+plt.show()
+
+def rgb2gray(rgb):
+    return np.dot(rgb[...,:3], [0.299, 0.587, 0.114])
+#3.将RGB转为灰度图
+gray = rgb2gray(lena)    
+# 也可以用 plt.imshow(gray, cmap = plt.get_cmap('gray'))
+plt.imshow(gray, cmap='Greys_r')
+plt.axis('off')
+plt.show()
+#４.缩放图像（引用skimage）
+from skimage import transform
+lena_new_sz =transform.resize(lena, (80,60)) # 第二个参数如果是整数，则为百分比，如果是tuple，则为输出图像的尺寸
+plt.imshow(lena_new_sz)
+plt.axis('off')
+plt.show()
+#5.存储图像
+from PIL import Image
+arr=np.array(lena)
+#将元素类型更改为'uint8'
+arr=np.array(arr,dtype='uint8')
+arr=Image.fromarray(arr)
+#第一个参数为存储的地址和名称，第二个参数为存储的图片类型
+arr.save('C:\\Users\\23501\\Desktop\\lena_new_sz.bmp','bmp')
